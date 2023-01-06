@@ -7,8 +7,12 @@
 #define MAX_CARDS 52
 #define MAX_SUIT 4
 #define MAX_FACE 13
+#define BLACK "\033[1;30m"
+#define RED   "\033[1;31m"
+#define GREEN "\033[1;32m"
+#define WHITE "\033[1;37m"
 
-const char *suits[MAX_SUIT] = {"♠", "♥", "♦", "♣"};
+const char *suits[MAX_SUIT] = {"♠", "♥", "♣", "♦"};
 const char *faces[MAX_FACE] = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
 struct card {
@@ -51,28 +55,43 @@ void shuffle_deck(struct card *deck) {
   }
 }
 
+void check_color(int value) {
+  if (value % 2 == 1) {
+    printf("%s",RED);
+  }
+  else {
+    printf("%s",BLACK);
+  }
+}
+
 void print_card(struct card *cards, int num_cards) {
   for (int i = 0; i < num_cards; i++) {
+    check_color(cards[i].suit);
     printf("┌─────┐ ");
   }
   printf("\n");
   for (int i = 0; i < num_cards; i++) {
+    check_color(cards[i].suit);
     printf("│%2s   │ ", faces[cards[i].face]);
   }
   printf("\n");
   for (int i = 0; i < num_cards; i++) {
     // ASCII art for the suits
+    check_color(cards[i].suit);
     printf("│  %s  │ ", suits[cards[i].suit]);
   }
   printf("\n");
   for (int i = 0; i < num_cards; i++) {
+    check_color(cards[i].suit);
     printf("│   %2s│ ", faces[cards[i].face]);
   }
   printf("\n");
   for (int i = 0; i < num_cards; i++) {
+    check_color(cards[i].suit);
     printf("└─────┘ ");
   }
   printf("\n");
+  printf("%s",WHITE);
 }
 
 
@@ -117,8 +136,9 @@ int main(void) {
   int balance = 100;
 
   while (balance > 0) {
+    printf("%s",WHITE);
     printf("Your balance: $%d\n", balance);
-    printf("Enter bet: $");
+    printf("Enter bet: $%s", GREEN);
     int bet;
     scanf("%d", &bet);
     if (bet > balance) {
@@ -131,6 +151,7 @@ int main(void) {
     draw_card(deck, player, &num_player_cards, &deck_pos, num_player_cards);
     draw_card(deck, dealer, &num_dealer_cards, &deck_pos, num_dealer_cards);
 
+    printf("%s",WHITE);
     printf("Dealer's hand:\n");
     print_card(dealer, 1);
     printf(" and a blank card\n");
@@ -166,7 +187,7 @@ int main(void) {
       printf("Dealer's: %d\n", dealer_total);
       printf("Your hand:\n");
       print_card(player, num_player_cards);
-      printf("Bust! You lose.\n");
+      printf("Bust! %sYou lose.\n", RED);
       player_total = get_hand_total(player, num_player_cards);
       printf("Yours: %d\n", player_total);
       balance -= bet;
@@ -197,13 +218,13 @@ print_card(player, num_player_cards);
 player_total = get_hand_total(player, num_player_cards);
 printf("Yours: %d\n", player_total);
 if (dealer_total > 21) {
-  printf("Dealer busts! You win.\n");
+  printf("Dealer busts! %sYou win.\n", GREEN);
   balance += bet;
 } else if (dealer_total > player_total) {
-  printf("Dealer wins.\n");
+  printf("%sDealer wins.\n", RED);
   balance -= bet;
 } else if (dealer_total < player_total) {
-  printf("You win!\n");
+  printf("%sYou win!\n", GREEN);
   balance += bet;
 } else {
   printf("Push.\n");
