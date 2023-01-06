@@ -27,7 +27,16 @@ void build_deck(struct card *deck) {
     for (int face = 0; face < MAX_FACE; face++) {
       deck[i].face = face;
       deck[i].suit = suit;
-      deck[i].value = face + 2;
+      if (face < 9) {
+        // Face cards 2-9 have a value equal to their face value
+        deck[i].value = face + 2;
+      } else if (face < 12) {
+        // Face cards J, Q, K have a value of 10
+        deck[i].value = 10;
+      } else {
+        // Ace has a value of 11
+        deck[i].value = 11;
+      }
       i++;
     }
   }
@@ -111,7 +120,6 @@ int main(void) {
       continue;
     }
     system("clear");
-
     draw_card(deck, player, &num_player_cards, &deck_pos, num_player_cards);
     draw_card(deck, dealer, &num_dealer_cards, &deck_pos, num_dealer_cards);
     draw_card(deck, player, &num_player_cards, &deck_pos, num_player_cards);
@@ -123,6 +131,7 @@ int main(void) {
     printf("Your hand:\n");
     print_card(player, num_player_cards);
     player_total = get_hand_total(player, num_player_cards);
+    printf("Balance: $%d | Bet: $%d\n", balance, bet);
     printf("Total: %d\n", player_total);
 
     char response;
@@ -134,10 +143,12 @@ int main(void) {
         printf("Dealer's hand:\n");
         print_card(dealer, num_dealer_cards);
         draw_card(deck, player, &num_player_cards, &deck_pos, num_player_cards);
+        printf("Dealer's: %d\n", dealer_total);
         printf("Your hand:\n");
         print_card(player, num_player_cards);
         player_total = get_hand_total(player, num_player_cards);
-        printf("Total: %d\n", player_total);
+        printf("Balance: $%d | Beting: $%d\n", balance, bet);
+        printf("Yours: %d\n", player_total);
       }
     } while (response == 'h' && player_total < 21);
 
@@ -145,9 +156,13 @@ int main(void) {
       system("clear");
       printf("Dealer's hand:\n");
       print_card(dealer, num_dealer_cards);
+      dealer_total = get_hand_total(dealer, num_dealer_cards);
+      printf("Dealer's: %d\n", dealer_total);
       printf("Your hand:\n");
       print_card(player, num_player_cards);
       printf("Bust! You lose.\n");
+      player_total = get_hand_total(player, num_player_cards);
+      printf("Yours: %d\n", player_total);
       balance -= bet;
       num_player_cards = 0;
       num_dealer_cards = 0;
@@ -159,7 +174,6 @@ int main(void) {
     dealer_total = get_hand_total(dealer, num_dealer_cards);
     printf("Dealer's turn.\n");
     print_card(dealer, num_dealer_cards);
-    printf("Total: %d\n", dealer_total);
     while (dealer_total < 17) {
       draw_card(deck, dealer, &num_dealer_cards, &deck_pos, num_dealer_cards);
       print_card(dealer, num_dealer_cards);
@@ -170,8 +184,12 @@ int main(void) {
 system("clear");
 printf("Dealer's hand:\n");
 print_card(dealer, num_dealer_cards);
+dealer_total = get_hand_total(dealer, num_dealer_cards);
+printf("Total: %d\n", dealer_total);
 printf("Your hand:\n");
 print_card(player, num_player_cards);
+player_total = get_hand_total(player, num_player_cards);
+printf("Yours: %d\n", player_total);
 if (dealer_total > 21) {
   printf("Dealer busts! You win.\n");
   balance += bet;
@@ -188,6 +206,8 @@ num_player_cards = 0;
 num_dealer_cards = 0;
 memset(player, 0, sizeof(player));
 memset(dealer, 0, sizeof(dealer));
+dealer_total = get_hand_total(dealer, num_dealer_cards);
+player_total = get_hand_total(player, num_player_cards);
 }
 
 printf("Game over. You lost all your money.\n");
