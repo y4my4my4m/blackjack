@@ -7,10 +7,12 @@
 #define MAX_CARDS 52
 #define MAX_SUIT 4
 #define MAX_FACE 13
-#define BLACK "\033[1;30m"
-#define RED   "\033[1;31m"
-#define GREEN "\033[1;32m"
-#define WHITE "\033[1;37m"
+#define BLACK  "\033[1;30m"
+#define RED    "\033[1;31m"
+#define GREEN  "\033[1;32m"
+#define YELLOW "\033[1;33m"
+#define PURPLE "\033[1;35m"
+#define WHITE  "\033[1;37m"
 
 const char *suits[MAX_SUIT] = {"♠", "♥", "♣", "♦"};
 const char *faces[MAX_FACE] = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
@@ -137,8 +139,8 @@ int main(void) {
 
   while (balance > 0) {
     printf("%s",WHITE);
-    printf("Your balance: $%d\n", balance);
-    printf("Enter bet: $%s", GREEN);
+    printf("Your balance: %s$%d\n", YELLOW, balance);
+    printf("%sEnter bet: %s$", WHITE, YELLOW);
     int bet;
     scanf("%d", &bet);
     if (bet > balance) {
@@ -158,8 +160,8 @@ int main(void) {
     printf("Your hand:\n");
     print_card(player, num_player_cards);
     player_total = get_hand_total(player, num_player_cards);
-    printf("Balance: $%d | Bet: $%d\n", balance, bet);
-    printf("Total: %d\n", player_total);
+    printf("Balance: %s$%d%s | Bet: %s$%d\n", YELLOW, balance, WHITE, YELLOW, bet);
+    printf("%sYours: %d\n", WHITE, player_total);
 
     char response;
     do {
@@ -174,8 +176,8 @@ int main(void) {
         printf("Your hand:\n");
         print_card(player, num_player_cards);
         player_total = get_hand_total(player, num_player_cards);
-        printf("Balance: $%d | Beting: $%d\n", balance, bet);
-        printf("Yours: %d\n", player_total);
+        printf("Balance: %s$%d%s | Bet: %s$%d\n", YELLOW, balance, WHITE, YELLOW, bet);
+        printf("%sYours: %d\n", WHITE, player_total);
       }
     } while (response == 'h' && player_total < 21);
 
@@ -189,7 +191,7 @@ int main(void) {
       print_card(player, num_player_cards);
       printf("Bust! %sYou lose.\n", RED);
       player_total = get_hand_total(player, num_player_cards);
-      printf("Yours: %d\n", player_total);
+      printf("%sYours: %d\n", WHITE, player_total);
       balance -= bet;
       num_player_cards = 0;
       num_dealer_cards = 0;
@@ -227,7 +229,7 @@ if (dealer_total > 21) {
   printf("%sYou win!\n", GREEN);
   balance += bet;
 } else {
-  printf("Push.\n");
+  printf("%sPush.\n", YELLOW);
 }
 num_player_cards = 0;
 num_dealer_cards = 0;
