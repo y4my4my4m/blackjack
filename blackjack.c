@@ -77,6 +77,12 @@ void print_card(struct card *cards, int num_cards) {
 
 
 void draw_card(struct card *deck, struct card *hand, int *num_cards, int *deck_pos, int hand_pos) {
+  if (hand_pos >= MAX_CARDS || *deck_pos >= MAX_CARDS) {
+    printf("Shuffling the remaining cards in the deck...\n");
+    shuffle_deck(deck);
+    *num_cards = 0;
+    *deck_pos = 0;
+  }
   hand[hand_pos] = deck[*deck_pos];
   (*num_cards)++;
   (*deck_pos)++;
