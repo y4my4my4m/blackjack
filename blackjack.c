@@ -156,7 +156,7 @@ int main(void) {
     printf("%s",WHITE);
     printf("Dealer's hand:\n");
     print_card(dealer, 1);
-    printf(" and a blank card\n");
+    printf("and a blank card\n");
     printf("Your hand:\n");
     print_card(player, num_player_cards);
     player_total = get_hand_total(player, num_player_cards);
