@@ -10,6 +10,7 @@
 
 ## Preview
 
+https://asciinema.org/a/eykBFpqJghmpUCrhpe60eGmJX
 ```txt
 Dealer's hand:
 ┌─────┐ ┌─────┐ 
